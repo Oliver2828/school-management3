@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.child{
+    display: none;
+}
+.parent:hover .child{
+    display: block;
+}
+/* .him{
+    background-image: url(assets/book.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+} */
+
+.custom-shape-divider-bottom-1731021532 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1731021532 svg {
+    position: relative;
+    display: block;
+    width: calc(124% + 1.3px);
+    height: 332px;
+}
+
+.custom-shape-divider-bottom-1731021532 .shape-fill {
+    fill: white;
+}
+
+
+
+.custom-shape-divider-top-1731453262 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-top-1731453262 svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 215px;
+    transform: rotateY(180deg);
+}
+
+.custom-shape-divider-top-1731453262 .shape-fill {
+    fill: #130707;
+    fill: #fff;
+
+}
+
+
+
+
+/* Student Information Management:
+
+Centralized storage of student data (personal details, attendance, grades, health records, etc.).
+Quick access to student profiles and history.
+Integration with enrollment and admission processes.
+Attendance Management:
+
+Automated tracking of student and teacher attendance.
+Alerts for absenteeism, tardiness, or irregular attendance.
+Reports and analysis to identify trends or areas of concern.
+Timetable Management:
+
+Easy creation and management of class schedules.
+Real-time updates on timetable changes.
+Ability to track room assignments, teacher availability, and subject allocation.
+Grade and Examination Management:
+
+Recording and storing grades, marks, and exam results.
+Generation of report cards and progress reports.
+Tools for creating and scheduling exams, assignments, and quizzes.
+Analysis tools to identify performance patterns.
+Communication Tools:
+
+Real-time communication between students, teachers, parents, and administrators (via SMS, email, and in-app messaging).
+Announcements, notifications, and alerts for upcoming events, holidays, and important deadlines.
+Parent-teacher communication platforms for regular updates on student progress.
+Fee Management:
+
+Automated calculation of school fees, dues, and fine management.
+Online payment gateways for easy fee submission.
+Fee receipt generation and history tracking for both parents and the administration.
+Library Management:
+
+Cataloging of books and educational resources.
+Tracking of books issued, returned, and overdue.
+Allowing students to reserve books and check availability online. */
