@@ -4,9 +4,9 @@ import { PiFlowerLotusFill } from 'react-icons/pi';
 
 function About5() {
   return (
-    <div className="min-h-[120vh] grid grid-rows-[20%,80%] bg-gray-50">
+    <div className="min-h-screen grid grid-rows-[auto,1fr] bg-gray-50 pb-[40px] md:pb-[60px]">
       {/* Title Section */}
-      <div className="text-center text-[30px] md:text-[36px] font-bold uppercase grid items-center">
+      <div className="text-center text-[30px] md:text-[36px] font-bold uppercase grid items-center py-6">
         <p>Our Core Values</p>
       </div>
 

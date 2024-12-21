@@ -1,26 +1,44 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-function navbar({show}) {
+function Navbar({ show, closeMenu }) {
   return (
-    <div  className='absolute top-9 bg-slate-400  w-[300px] ' style={{right:show, transition:'1s'}}>
-      <Link to='/' className='hover:text-blue-300'>
-      <div className="h-[40px] w-full text-center font-serif">Home</div>
-      </Link>
-          <Link to='/contact' className='hover:text-blue-300'>
-            <div className='h-[40px] w-full text-center font-serif'>Contact</div>
-          </Link>
-          <Link to='/about' className='hover:text-blue-300'>
-          <div className='h-[40px] w-full text-center  font-serif '>About</div>
-           </Link>
-          <Link to='/landing' className='hover:text-blue-300'>
-          <div className='h-[40px] w-full text-center  font-serif'>Login</div>
-          </Link>
-          <Link to='/register' className='hover:text-blue-300 text-center'>
-          <div className='h-[40px] w-full text-center  font-serif'>Register</div>
-          </Link>
+    <div
+      className={`fixed top-0 right-0 bg-blue-500 w-[300px] h-[100vh] shadow-lg transform ${
+        show === '0' ? 'translate-x-0' : 'translate-x-full'
+      } transition-transform duration-300 ease-in-out z-50`}
+    >
+      {/* Close Button */}
+      <div className="flex justify-end p-4">
+        <button
+          onClick={closeMenu}
+          aria-label="Close Menu"
+          className="text-white text-2xl font-bold hover:text-red-400 focus:outline-none"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="flex flex-col items-center mt-6 space-y-4">
+        <Link to="/" onClick={closeMenu} className="text-white hover:text-blue-300">
+          Home
+        </Link>
+        <Link to="/contact" onClick={closeMenu} className="text-white hover:text-blue-300">
+          Contact
+        </Link>
+        <Link to="/about" onClick={closeMenu} className="text-white hover:text-blue-300">
+          About
+        </Link>
+        <Link to="/landing" onClick={closeMenu} className="text-white hover:text-blue-300">
+          Login
+        </Link>
+        <Link to="/register" onClick={closeMenu} className="text-white hover:text-blue-300">
+          Register
+        </Link>
+      </nav>
     </div>
-  )
+  );
 }
 
-export default navbar
+export default Navbar;
