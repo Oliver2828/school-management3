@@ -9,6 +9,9 @@ function About2() {
   const toggleMenu = () => {
     setShow(show === '-350px' ? '0' : '-350px');
   };
+  const closeMenu = () => {
+    setShow('-350px');
+  };
 
   return (
     <>
@@ -47,7 +50,7 @@ function About2() {
               <button onClick={toggleMenu} className="text-xl focus:outline-none">
                 ☰
               </button>
-              <Navbar show={show} />
+              <Navbar show={show}  closeMenu={closeMenu}/>
             </div>
           </div>
           <div className="grid px-6 sm:px-10 md:px-14">

@@ -9,6 +9,15 @@ function Contact2() {
   const toggleMenu = () => {
     setShow(show === '-350px' ? '0' : '-350px');
   }
+  //  var [closepage,setClosepage]=useState('0')
+  //   function closet() {
+  //     setClosepage('-350px')
+  //   }
+
+  const closeMenu = () => {
+    setShow('-350px');
+  };
+
   return (
     <div className=" bg-blue-500 ">
       <div className="h-[80px] w-full text-white flex justify-between items-center px-6 md:px-10 ">
@@ -32,7 +41,7 @@ function Contact2() {
       <button onClick={toggleMenu} className="text-xl focus:outline-none">
         ☰
       </button>
-      <Navbar show={show} />
+      <Navbar show={show} closeMenu={closeMenu} />
     </div>
   </div>
   <div className="bg-blue-500 h-[87vh] text-white grid items-center justify-center">
