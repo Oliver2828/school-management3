@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Homefolder/navbar';
 import { FaTv, FaHome } from 'react-icons/fa';
+import Landing from '../Landing';
 
 function About2() {
   const [show, setShow] = useState('-350px');
@@ -12,6 +13,12 @@ function About2() {
   const closeMenu = () => {
     setShow('-350px');
   };
+
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const closeModal = () => {
+      setIsLoginModalOpen(false);
+    };
 
   return (
     <>
@@ -37,8 +44,13 @@ function About2() {
               <div className="relative group">
                 <Link className="hover:text-blue-300">Get Started</Link>
                 <nav className="hidden group-hover:flex flex-col gap-2 absolute top-full right-0 bg-slate-200 rounded-lg shadow-lg">
-                  <Link to="/landing" className="p-3 text-center hover:bg-blue-500">
-                    Login
+                  <Link>
+                  <button
+                // className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]"
+                onClick={() => setIsLoginModalOpen(true)}
+              >
+                Login
+              </button>
                   </Link>
                   <Link to="/register" className="p-3 text-center hover:bg-blue-500">
                     Register
@@ -68,6 +80,9 @@ function About2() {
 </div>
 
         </div>
+
+        {/* Login Modal */}
+{isLoginModalOpen && <Landing closeModal={closeModal} />}
       </div>
     </>
   );
