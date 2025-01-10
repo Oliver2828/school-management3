@@ -18,6 +18,8 @@ function Register() {
 
   // Common Registration Form
   const RegistrationForm = () => (
+
+    
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex gap-4">
         <div className="flex-1">

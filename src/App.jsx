@@ -10,6 +10,7 @@ import Register from './components/Register'
 import Home4 from './components/Homefolder/Home4'
 import About from './components/Aboutfolder/About'
 import Testadmin from './components/Dashboardfolder/Testadmin'
+import MainReg from './components/MainReg'
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
         <Route  path='/contact' element={<Contact/>}></Route>
         <Route  path='/about' element={<About/>}></Route>
         {/* <Route  path='/landing' element={<Landing/>}></Route> */}
-        <Route  path='/register' element={<Register/>}></Route>
+        <Route  path='/register' element={<MainReg/>}></Route>
         <Route  path='/admin' element={<Testadmin/>}></Route>
 
         {/* <Route  path='/appDashboard' element={<AppDashboard/>}></Route> */}
