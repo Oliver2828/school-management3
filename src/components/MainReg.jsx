@@ -23,7 +23,7 @@ function MainReg() {
   return (
     <div>
           {/* Header */}
-      <div className="h-[80px] w-full text-black flex justify-between items-center px-4 sm:px-6 md:px-10">
+      {/* <div className="h-[80px] w-full text-black flex justify-between items-center px-4 sm:px-6 md:px-10">
         <div className="text-[clamp(20px,5vw,30px)] flex items-center font-bold">
           <span className="text-blue-500">
             <FaHome className="text-black" />
@@ -53,7 +53,7 @@ function MainReg() {
           </button>
           <Navbar show={show} closeMenu={toggleMenu} />
         </div>
-      </div>
+      </div> */}
 
       <Register/>
     </div>

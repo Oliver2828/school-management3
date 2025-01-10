@@ -3,6 +3,7 @@ import { FaTv, FaHome } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import Navbar from '../Homefolder/navbar';
 
+
 function Contact2() {
   const [show, setShow] = useState('-350px');
 
