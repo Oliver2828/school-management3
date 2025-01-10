@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Landing from '../Landing';
 
 function Navbar({ show, closeMenu }) {
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  
+    const toggleMenu = () => {
+      setShow(show === '0' ? '-350px' : '0');
+    };
+  
+    const closeModal = () => {
+      setIsLoginModalOpen(false);
+    };
   return (
     <div
       className={`fixed top-0 right-0 bg-blue-500 w-[300px] h-[100vh] shadow-lg transform ${
@@ -30,13 +41,25 @@ function Navbar({ show, closeMenu }) {
         <Link to="/about" onClick={closeMenu} className="text-white hover:text-blue-300">
           About
         </Link>
-        <Link to="/landing" onClick={closeMenu} className="text-white hover:text-blue-300">
-          Login
-        </Link>
+        {/* <Link to="/landing" onClick={closeMenu} className="text-white hover:text-blue-300"> */}
+        <button
+                // className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]"
+                onClick={() => setIsLoginModalOpen(true)}
+              >
+                Login
+              </button>
+               {/* <Navbar show={show} closeMenu={toggleMenu} /> */}
+        {/* </Link> */}
         <Link to="/register" onClick={closeMenu} className="text-white hover:text-blue-300">
           Register
         </Link>
       </nav>
+
+
+
+
+       {/* Login Modal */}
+       {isLoginModalOpen && <Landing closeModal={closeModal} />}
     </div>
   );
 }
