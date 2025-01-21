@@ -10,6 +10,7 @@ import Register from './components/Register'
 import Home4 from './components/Homefolder/Home4'
 import About from './components/Aboutfolder/About'
 import Testadmin from './components/Dashboardfolder/Testadmin'
+import MainReg from './components/MainReg'
 
 // Component to handle conditional rendering of Home4
 function ConditionalHome4() {
@@ -22,6 +23,7 @@ function App() {
     <Router>
       <Header />
       <Routes>
+<<<<<<< HEAD
         <Route path='/' element={<Homecomponent />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/about' element={<About />} />
@@ -29,6 +31,17 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/admin' element={<Testadmin />} />
         {/* <Route path='/appDashboard' element={<AppDashboard />} /> */}
+=======
+        <Route  path='/' element={<Homecomponent/>}></Route>
+        <Route  path='/contact' element={<Contact/>}></Route>
+        <Route  path='/about' element={<About/>}></Route>
+        {/* <Route  path='/landing' element={<Landing/>}></Route> */}
+        <Route  path='/register' element={<MainReg/>}></Route>
+        <Route  path='/admin' element={<Testadmin/>}></Route>
+
+        {/* <Route  path='/appDashboard' element={<AppDashboard/>}></Route> */}
+
+>>>>>>> 21a17109208130c2d648880da0cd47db55a54e50
       </Routes>
       <ConditionalHome4 />
     </Router>

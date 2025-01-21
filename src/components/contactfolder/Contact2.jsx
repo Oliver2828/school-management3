@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { FaTv, FaHome } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import Navbar from '../Homefolder/navbar';
+import Landing from '../Landing';
+
+
 
 function Contact2() {
   const [show, setShow] = useState('-350px');
@@ -9,6 +12,21 @@ function Contact2() {
   const toggleMenu = () => {
     setShow(show === '-350px' ? '0' : '-350px');
   }
+  //  var [closepage,setClosepage]=useState('0')
+  //   function closet() {
+  //     setClosepage('-350px')
+  //   }
+
+  const closeMenu = () => {
+    setShow('-350px');
+  };
+
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const closeModal = () => {
+    setIsLoginModalOpen(false);
+  };
+
+
   return (
     <div className=" bg-blue-500 ">
       <div className="h-[80px] w-full text-white flex justify-between items-center px-6 md:px-10 ">
@@ -23,7 +41,14 @@ function Contact2() {
       <div className="relative group">
         <Link className="hover:text-blue-300">Get Started</Link>
         <nav className="hidden group-hover:flex flex-col gap-2 absolute top-full right-0 bg-slate-200 rounded-lg shadow-lg">
-          <Link to="/landing" className="p-3 text-center hover:bg-blue-500">Login</Link>
+          <Link  >
+          <button
+                // className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]"
+                onClick={() => setIsLoginModalOpen(true)}
+              >
+                Login
+              </button>
+                       </Link>
           <Link to="/register" className="p-3 text-center hover:bg-blue-500">Register</Link>
         </nav>
       </div>
@@ -32,7 +57,7 @@ function Contact2() {
       <button onClick={toggleMenu} className="text-xl focus:outline-none">
         ☰
       </button>
-      <Navbar show={show} />
+      <Navbar show={show} closeMenu={closeMenu} />
     </div>
   </div>
   <div className="bg-blue-500 h-[87vh] text-white grid items-center justify-center">
@@ -49,7 +74,8 @@ function Contact2() {
     </svg>
   </div>
       
-
+{/* Login Modal */}
+{isLoginModalOpen && <Landing closeModal={closeModal} />}
     </div>
   )
 }
