@@ -10,8 +10,8 @@ function Contact3() {
         </div>
 
         {/* Main Section */}
-        <div className="flex justify-center">
-          <div className="h-auto w-full md:h-[85vh] md:w-[87%] grid gap-4 grid-cols-1 lg:grid-cols-[50%,50%] px-4">
+        <div className="flex justify-center  ">
+          <div className="h-auto w-full md:h-[85vh] md:w-[87%] grid gap-7 grid-cols-1 lg:grid-cols-[50%,50%] px-4">
             {/* Left Section (Form) */}
             <div className="grid grid-rows-[20%,auto] gap-4 p-4 md:p-0">
               <div className="uppercase text-center">

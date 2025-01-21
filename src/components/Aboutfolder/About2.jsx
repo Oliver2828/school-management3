@@ -51,7 +51,7 @@ function About2() {
             </div>
           </div>
           <div className="grid px-6 sm:px-10 md:px-14">
-  <div className="bg-[#000000a6] rounded-[20px] mt-10 md:mt-14 w-full sm:w-[80%] md:w-[55%] mx-auto h-auto p-6">
+  <div className="bg-[#000000a6] rounded-[20px] md:mt-14 w-full sm:w-[80%] md:w-[55%] mx-auto h-auto p-6">
     <div className="p-5 text-left">
       <h2 className="uppercase text-[30px] sm:text-[40px] md:text-[50px] text-blue-500">About Us</h2>
       <p className="font-thin text-white text-[16px] sm:text-[18px] md:text-[20px] leading-relaxed">
