@@ -36,12 +36,12 @@ function Home1() {
             <Link className="hover:text-blue-300 text-[clamp(14px,2.5vw,16px)]">Get Started</Link>
             <nav className="hidden group-hover:flex flex-col gap-2 absolute top-full right-0 bg-slate-200 rounded-lg shadow-lg">
               <button
-                className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]"
+                className="p-3 text-center hover:bg-blue-500 flex justify-center"
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Login
               </button>
-              <Link to="/Register" className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]">Register</Link>
+              <Link to="/Register" className="p-3 text-center hover:bg-blue-500 ">Register</Link>
             </nav>
           </div>
         </nav>

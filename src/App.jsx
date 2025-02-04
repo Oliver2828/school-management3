@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 // import Home from './components/Home'
 // import Landing from './components/Landing'
 import Homecomponent from './components/Homefolder/Homecomponent'
@@ -12,13 +12,24 @@ import About from './components/Aboutfolder/About'
 import Testadmin from './components/Dashboardfolder/Testadmin'
 import MainReg from './components/MainReg'
 
+// Component to handle conditional rendering of Home4
+function ConditionalHome4() {
+  const location = useLocation();
+  return location.pathname !== '/admin' ? <Home4 /> : null;
+}
 
 function App() {
   return (
-    
     <Router>
-      <Header/>
+      <Header />
       <Routes>
+        <Route path='/' element={<Homecomponent />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/about' element={<About />} />
+        {/* <Route path='/landing' element={<Landing />} /> */}
+        <Route path='/register' element={<Register />} />
+        <Route path='/admin' element={<Testadmin />} />
+        {/* <Route path='/appDashboard' element={<AppDashboard />} /> */}
         <Route  path='/' element={<Homecomponent/>}></Route>
         <Route  path='/contact' element={<Contact/>}></Route>
         <Route  path='/about' element={<About/>}></Route>
@@ -29,11 +40,9 @@ function App() {
         {/* <Route  path='/appDashboard' element={<AppDashboard/>}></Route> */}
 
       </Routes>
-      <Home4/>
+      <ConditionalHome4 />
     </Router>
-  
   )
-
 }
 
 export default App

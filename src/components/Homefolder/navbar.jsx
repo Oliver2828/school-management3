@@ -15,12 +15,12 @@ function Navbar({ show, closeMenu }) {
     };
   return (
     <div
-      className={`fixed top-0 right-0 bg-blue-500 w-[300px] h-[100vh] shadow-lg transform ${
+      className={`fixed  flex flex-col items-end top-0 right-0 bg w-[500px] h-[100vh] shadow-lg transform ${
         show === '0' ? 'translate-x-0' : 'translate-x-full'
       } transition-transform duration-300 ease-in-out z-50`}
     >
       {/* Close Button */}
-      <div className="flex justify-end p-4">
+      <div className="flex bg-blue-500 w-[50%] h-[80px] justify-end p-4">
         <button
           onClick={closeMenu}
           aria-label="Close Menu"
@@ -31,7 +31,7 @@ function Navbar({ show, closeMenu }) {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col items-center mt-6 space-y-4">
+      <nav className=" bg-blue-500 h-[600px] w-[50%] flex flex-col items-center space-y-4">
         <Link to="/" onClick={closeMenu} className="text-white hover:text-blue-300">
           Home
         </Link>
@@ -43,8 +43,12 @@ function Navbar({ show, closeMenu }) {
         </Link>
         {/* <Link to="/landing" onClick={closeMenu} className="text-white hover:text-blue-300"> */}
         <button
+<<<<<<< HEAD
         className="text-white hover:text-blue-300"
                 // className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]"
+=======
+                className="p-3 text-white hover:text-blue-300 "
+>>>>>>> 84b611183461b46c04b0b29ddc8d9e6a185c477a
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Login
