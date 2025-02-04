@@ -34,7 +34,7 @@ function Landing({ closeModal }) {
         <h2 className='font-bold text-2xl lg:text-3xl text-center'>Login</h2>
         <form className='grid gap-4' onSubmit={handleSubmit}>
           <div className='grid gap-2'>
-            <label className='text-lg lg:text-xl font-semibold'>Username</label>
+            <label className='text-lg lg:text-xl font-semibold text-black'>Username</label>
             <input
               type="text"
               className='w-full h-[40px] rounded-[20px] p-2 border'
@@ -44,7 +44,7 @@ function Landing({ closeModal }) {
             />
           </div>
           <div className='grid gap-2'>
-            <label className='text-lg lg:text-xl font-semibold'>Password</label>
+            <label className='text-lg lg:text-xl font-semibold text-black'>Password</label>
             <input
               type="password"
               className='w-full h-[40px] rounded-[20px] p-2 border'
