@@ -43,7 +43,12 @@ function Navbar({ show, closeMenu }) {
         </Link>
         {/* <Link to="/landing" onClick={closeMenu} className="text-white hover:text-blue-300"> */}
         <button
+<<<<<<< HEAD
+        className="text-white hover:text-blue-300"
+                // className="p-3 text-center hover:bg-blue-500 text-[clamp(12px,2vw,14px)]"
+=======
                 className="p-3 text-white hover:text-blue-300 "
+>>>>>>> 84b611183461b46c04b0b29ddc8d9e6a185c477a
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Login

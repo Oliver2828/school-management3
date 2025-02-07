@@ -15,18 +15,18 @@ function Landing({ closeModal }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white w-full max-w-[400px] rounded-[20px] p-6 grid gap-6">
-        <h2 className="font-bold text-2xl lg:text-3xl text-center">Login</h2>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          <div className="grid gap-2">
-            <label className="text-lg lg:text-xl font-semibold">Username</label>
+        <h2 className='font-bold text-2xl lg:text-3xl text-center'>Login</h2>
+        <form className='grid gap-4' onSubmit={handleSubmit}>
+          <div className='grid gap-2'>
+            <label className='text-lg lg:text-xl font-semibold'>Username</label>
             <input
               type="text"
               className="w-full h-[40px] rounded-[20px] p-2 border"
               required
             />
           </div>
-          <div className="grid gap-2">
-            <label className="text-lg lg:text-xl font-semibold">Password</label>
+          <div className='grid gap-2'>
+            <label className='text-lg lg:text-xl font-semibold'>Password</label>
             <input
               type="password"
               className="w-full h-[40px] rounded-[20px] p-2 border"
