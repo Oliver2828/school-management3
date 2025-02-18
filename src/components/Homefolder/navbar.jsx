@@ -59,6 +59,7 @@ function Navbar({ show, closeMenu }) {
 
 
        {/* Login Modal */}
+       
        {isLoginModalOpen && <Landing closeModal={closeModal} />}
     </div>
   );

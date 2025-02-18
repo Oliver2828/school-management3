@@ -1,99 +1,116 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const ParentDetails = () => {
+function ParentDetails() {
+  const [parentData, setParentData] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const fetchParentData = async () => {
+      try {
+        // Adjust the URL below to match your backend endpoint.
+        const response = await axios.get("http://localhost:5000/api/parent/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`, // If your API uses Bearer token authentication
+          },
+        });
+        setParentData(response.data); // Expected to return parent's details as JSON
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch parent data.");
+      }
+    };
+
+    fetchParentData();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-xl font-bold mb-4">Parent Details</h1>
-        
-        {/* Search Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <input
-            type="text"
-            placeholder="Search by ID ..."
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          />
-          <input
-            type="text"
-            placeholder="Search by Name ..."
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          />
-          <input
-            type="text"
-            placeholder="Search by Phone ..."
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          />
-          <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300">
-            SEARCH
-          </button>
-        </div>
-        
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="border border-gray-300 px-4 py-2">ID</th>
-                <th className="border border-gray-300 px-4 py-2">Photo</th>
-                <th className="border border-gray-300 px-4 py-2">Name</th>
-                <th className="border border-gray-300 px-4 py-2">Gender</th>
-                <th className="border border-gray-300 px-4 py-2">Child Name</th>
-                <th className="border border-gray-300 px-4 py-2">Class</th>
-                <th className="border border-gray-300 px-4 py-2">Section</th>
-                <th className="border border-gray-300 px-4 py-2">Address</th>
-                <th className="border border-gray-300 px-4 py-2">Phone</th>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Parent Details</h1>
+
+      {/* Optional Search Fields (placeholders) */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <input
+          type="text"
+          placeholder="Search by ID..."
+          className="border rounded p-2"
+        />
+        <input
+          type="text"
+          placeholder="Search by Name..."
+          className="border rounded p-2"
+        />
+        <input
+          type="text"
+          placeholder="Search by Child Name..."
+          className="border rounded p-2"
+        />
+        <input
+          type="text"
+          placeholder="Search by Phone..."
+          className="border rounded p-2"
+        />
+        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+          Search
+        </button>
+      </div>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      {/* Table displaying parent's details */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-200">
+          <thead className="bg-gray-100 border-b">
+            <tr>
+              <th className="px-4 py-2 text-left">ID</th>
+              <th className="px-4 py-2 text-left">Photo</th>
+              <th className="px-4 py-2 text-left">Name</th>
+              <th className="px-4 py-2 text-left">Gender</th>
+              <th className="px-4 py-2 text-left">Child Name</th>
+              <th className="px-4 py-2 text-left">Class</th>
+              <th className="px-4 py-2 text-left">Section</th>
+              <th className="px-4 py-2 text-left">Address</th>
+              <th className="px-4 py-2 text-left">Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {parentData ? (
+              <tr className="border-b">
+                {/* If your backend returns an ID, replace "#P001" with that */}
+                <td className="px-4 py-2">#P001</td>
+                <td className="px-4 py-2">
+                  {/* Placeholder image – replace with actual image URL if available */}
+                  <img
+                    src="https://via.placeholder.com/50"
+                    alt="Parent"
+                    className="rounded"
+                  />
+                </td>
+                <td className="px-4 py-2">
+                  {parentData.firstName} {parentData.lastName}
+                </td>
+                {/* If gender, child name, class, or section are not provided, display "N/A" */}
+                <td className="px-4 py-2">N/A</td>
+                <td className="px-4 py-2">N/A</td>
+                <td className="px-4 py-2">N/A</td>
+                <td className="px-4 py-2">N/A</td>
+                <td className="px-4 py-2">{parentData.address}</td>
+                <td className="px-4 py-2">{parentData.phoneNumber}</td>
               </tr>
-            </thead>
-            <tbody>
-              {/* Example Data Rows */}
-              {[
-                {
-                  id: "#P001",
-                  photo: "https://via.placeholder.com/30",
-                  name: "John Smith",
-                  gender: "Male",
-                  childName: "Anna Smith",
-                  class: "2",
-                  section: "A",
-                  address: "34 High Street, London",
-                  phone: "+123 9988568",
-                },
-                {
-                  id: "#P002",
-                  photo: "https://via.placeholder.com/30",
-                  name: "Mary Johnson",
-                  gender: "Female",
-                  childName: "Tom Johnson",
-                  class: "1",
-                  section: "B",
-                  address: "59 Sydney Road, Australia",
-                  phone: "+987 6543210",
-                },
-              ].map((parent, index) => (
-                <tr key={index} className="hover:bg-gray-100">
-                  <td className="border border-gray-300 px-4 py-2">{parent.id}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <img
-                      src={parent.photo}
-                      alt="Parent"
-                      className="h-8 w-8 rounded-full mx-auto"
-                    />
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.gender}</td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.childName}</td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.class}</td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.section}</td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.address}</td>
-                  <td className="border border-gray-300 px-4 py-2">{parent.phone}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ) : (
+              <tr>
+                <td colSpan={9} className="px-4 py-2 text-center">
+                  No parent data found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
-};
+}
 
 export default ParentDetails;

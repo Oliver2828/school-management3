@@ -22,7 +22,7 @@ const Sidebar = () => {
       <div
         className={`fixed top-0 left-0 h-full bg-blue-800 text-white transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0 w-64" : "-translate-x-full"
-        } lg:translate-x-0 lg:w-64 z-40`}
+        } lg:translate-x-0 lg:w-[40%] z-40`}
       >
         <div className="p-4 text-2xl font-bold border-b border-blue-600">
           School Dashboard
@@ -65,7 +65,7 @@ const Sidebar = () => {
       )}
 
       {/* Main Content */}
-      <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "ml-0" : "ml-0"} lg:ml-64 p-6`}>
+      <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "ml-0" : "ml-0"} lg:ml-[40%] p-6`}>
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
           {[

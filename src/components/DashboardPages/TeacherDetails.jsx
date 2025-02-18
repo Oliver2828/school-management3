@@ -1,99 +1,113 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const TeacherDetails = () => {
+function TeacherDetails() {
+  const [teacherData, setTeacherData] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const fetchTeacherData = async () => {
+      try {
+        // Adjust this endpoint to your actual route, e.g. "/api/teacher/profile"
+        const res = await axios.get("http://localhost:5000/api/teacher/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`, // if your backend expects a Bearer token
+          },
+        });
+        setTeacherData(res.data); // The response should have { firstName, lastName, address, phoneNumber, etc. }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch teacher data.");
+      }
+    };
+
+    fetchTeacherData();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-xl font-bold mb-4">Teacher Details</h1>
-        
-        {/* Search Bar */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <input
-            type="text"
-            placeholder="Search by ID ..."
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          />
-          <input
-            type="text"
-            placeholder="Search by Name ..."
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          />
-          <input
-            type="text"
-            placeholder="Search by Phone ..."
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
-          />
-          <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring focus:ring-red-300">
-            SEARCH
-          </button>
-        </div>
-        
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse border border-gray-300">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="border border-gray-300 px-4 py-2">ID</th>
-                <th className="border border-gray-300 px-4 py-2">Photo</th>
-                <th className="border border-gray-300 px-4 py-2">Name</th>
-                <th className="border border-gray-300 px-4 py-2">Gender</th>
-                <th className="border border-gray-300 px-4 py-2">Subject</th>
-                <th className="border border-gray-300 px-4 py-2">Class</th>
-                <th className="border border-gray-300 px-4 py-2">Section</th>
-                <th className="border border-gray-300 px-4 py-2">Address</th>
-                <th className="border border-gray-300 px-4 py-2">Phone</th>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Teacher Details</h1>
+
+      {/* Optional: Search Fields (placeholders) */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <input
+          type="text"
+          placeholder="Search by ID..."
+          className="border rounded p-2"
+        />
+        <input
+          type="text"
+          placeholder="Search by Name..."
+          className="border rounded p-2"
+        />
+        <input
+          type="text"
+          placeholder="Search by Subject..."
+          className="border rounded p-2"
+        />
+        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+          Search
+        </button>
+      </div>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-200">
+          <thead className="bg-gray-100 border-b">
+            <tr>
+              <th className="px-4 py-2 text-left">ID</th>
+              <th className="px-4 py-2 text-left">Photo</th>
+              <th className="px-4 py-2 text-left">Name</th>
+              <th className="px-4 py-2 text-left">Gender</th>
+              <th className="px-4 py-2 text-left">Subject</th>
+              <th className="px-4 py-2 text-left">Address</th>
+              <th className="px-4 py-2 text-left">Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teacherData ? (
+              <tr className="border-b">
+                {/* For now, ID is a placeholder (#T001). If your backend returns an actual ID, use that. */}
+                <td className="px-4 py-2">#T001</td>
+
+                {/* Photo is a placeholder. If your backend returns an image URL, use that instead. */}
+                <td className="px-4 py-2">
+                  <img
+                    src="https://via.placeholder.com/50"
+                    alt="Teacher"
+                    className="rounded"
+                  />
+                </td>
+
+                {/* Combine firstName and lastName from the fetched data */}
+                <td className="px-4 py-2">
+                  {teacherData.firstName} {teacherData.lastName}
+                </td>
+
+                {/* If your backend doesn't return gender, use "N/A" */}
+                <td className="px-4 py-2">N/A</td>
+
+                {/* If your backend doesn't return subject, use "N/A" */}
+                <td className="px-4 py-2">N/A</td>
+
+                <td className="px-4 py-2">{teacherData.address}</td>
+                <td className="px-4 py-2">{teacherData.phoneNumber}</td>
               </tr>
-            </thead>
-            <tbody>
-              {/* Example Data Rows */}
-              {[
-                {
-                  id: "#T001",
-                  photo: "https://via.placeholder.com/30",
-                  name: "Mark Willy",
-                  gender: "Male",
-                  subject: "English",
-                  class: "2",
-                  section: "A",
-                  address: "TA-107 Newyork",
-                  phone: "+123 9988568",
-                },
-                {
-                  id: "#T002",
-                  photo: "https://via.placeholder.com/30",
-                  name: "Jessia Rose",
-                  gender: "Female",
-                  subject: "Mathematics",
-                  class: "1",
-                  section: "A",
-                  address: "59 Australia, Sydney",
-                  phone: "+987 6543210",
-                },
-              ].map((teacher, index) => (
-                <tr key={index} className="hover:bg-gray-100">
-                  <td className="border border-gray-300 px-4 py-2">{teacher.id}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <img
-                      src={teacher.photo}
-                      alt="Teacher"
-                      className="h-8 w-8 rounded-full mx-auto"
-                    />
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.name}</td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.gender}</td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.subject}</td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.class}</td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.section}</td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.address}</td>
-                  <td className="border border-gray-300 px-4 py-2">{teacher.phone}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ) : (
+              <tr>
+                <td colSpan={7} className="px-4 py-2 text-center">
+                  No teacher data found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
-};
+}
 
 export default TeacherDetails;
