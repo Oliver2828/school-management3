@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Landing from "./Landing"; // adjust the path as needed
 
@@ -13,14 +13,21 @@ function Register() {
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "",        // New field for Student role
-    studentClass: "",  // New field for Student role
+    gender: "Male", // default for Student/Parent
+    studentClass: "Class 1", // default for Students
+    occupation: "", // new field for Parent
   });
   const [role, setRole] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  
+  // State variables for toggling password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -29,10 +36,17 @@ function Register() {
     }));
   };
 
+  // Handle file selection
+  const handleFileChange = (e) => {
+    setProfilePic(e.target.files[0]);
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    // Basic validations
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -45,18 +59,39 @@ function Register() {
     setLoading(true);
 
     try {
-      // Include the student-specific fields only if role is Student
-      const payload =
-        role === "Student"
-          ? { ...formData, role }
-          : { ...formData, role, gender: undefined, studentClass: undefined };
+      // Create a FormData object to handle file upload + text fields.
+      const payload = new FormData();
+      payload.append("firstName", formData.firstName);
+      payload.append("lastName", formData.lastName);
+      payload.append("email", formData.email);
+      payload.append("phoneNumber", formData.phoneNumber);
+      payload.append("address", formData.address);
+      payload.append("username", formData.username);
+      payload.append("password", formData.password);
+      payload.append("role", role);
 
+      // Include Student-specific fields if role is Student
+      if (role === "Student") {
+        payload.append("gender", formData.gender);
+        payload.append("studentClass", formData.studentClass);
+        if (profilePic) {
+          payload.append("profilePic", profilePic);
+        }
+      }
+
+      // Include Parent-specific fields if role is Parent
+      if (role === "Parent") {
+        payload.append("gender", formData.gender);
+        payload.append("occupation", formData.occupation);
+        if (profilePic) {
+          payload.append("profilePic", profilePic);
+        }
+      }
+
+      // Make the registration request
       const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: payload,
       });
 
       const data = await response.json();
@@ -64,8 +99,7 @@ function Register() {
         throw new Error(data.message || "Registration failed");
       }
 
-      // If the registered user is a student and a studentId is returned,
-      // alert the student to save their unique ID.
+      // If Student, possibly show unique studentId
       if (role === "Student" && data.studentId) {
         alert(
           `Registration successful! Your unique student ID is: ${data.studentId}. Please save this ID as it will be used in the future.`
@@ -74,6 +108,7 @@ function Register() {
         alert("Registration successful!");
       }
 
+      // Store token and reset form
       localStorage.setItem("token", data.token);
       setFormData({
         firstName: "",
@@ -84,10 +119,12 @@ function Register() {
         username: "",
         password: "",
         confirmPassword: "",
-        gender: "",
-        studentClass: "",
+        gender: "Male",
+        studentClass: "Class 1",
+        occupation: "",
       });
       setRole("");
+      setProfilePic(null);
       setShowLoginModal(true);
     } catch (error) {
       setError(error.message);
@@ -98,7 +135,7 @@ function Register() {
   return (
     <div className="bg-gray-300 min-h-screen">
       {/* Header */}
-      <div className="h-[80px] w-full text-white flex justify-between items-center px-6 md:px-10">
+      <div className="h-[80px] w-full text-blue-600 flex justify-between items-center px-6 md:px-10">
         <div className="text-[24px] md:text-[30px] flex items-center font-bold">
           <span className="text-blue-300">
             <FaHome className="text-white" />
@@ -106,24 +143,16 @@ function Register() {
           <h1 className="ml-2 uppercase">olams</h1>
         </div>
         <nav className="hidden md:flex gap-[30px] lg:gap-[70px]">
-          <Link to="/" className="hover:text-blue-300">
-            Home
-          </Link>
-          <Link to="/contact" className="hover:text-blue-300">
-            Contact
-          </Link>
-          <Link to="/about" className="hover:text-blue-300">
-            About
-          </Link>
+          <Link to="/" className="hover:text-blue-300">Home</Link>
+          <Link to="/contact" className="hover:text-blue-300">Contact</Link>
+          <Link to="/about" className="hover:text-blue-300">About</Link>
         </nav>
       </div>
 
       {/* Main Content */}
       <div className="flex items-center justify-center p-4">
         <div className="w-full max-w-3xl bg-slate-300 rounded-lg shadow-lg p-8">
-          <h2 className="text-3xl font-bold text-center text-black mb-6">
-            Register
-          </h2>
+          <h2 className="text-3xl font-bold text-center text-black mb-6">Register</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Role Selection (full width) */}
@@ -209,7 +238,7 @@ function Register() {
                 />
               </div>
 
-              {/* Address (full width) */}
+              {/* Address */}
               <div className="col-span-2">
                 <label className="block text-sm font-semibold text-gray-700">
                   Address
@@ -225,7 +254,7 @@ function Register() {
                 />
               </div>
 
-              {/* Username (full width) */}
+              {/* Username */}
               <div className="col-span-2">
                 <label className="block text-sm font-semibold text-gray-700">
                   Username
@@ -242,12 +271,12 @@ function Register() {
               </div>
 
               {/* Password */}
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-semibold text-gray-700">
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={passwordVisible ? "text" : "password"}
                   name="password"
                   placeholder="Password"
                   value={formData.password}
@@ -255,15 +284,21 @@ function Register() {
                   required
                   className="w-full p-3 border rounded-md"
                 />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </div>
               </div>
 
               {/* Confirm Password */}
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-semibold text-gray-700">
                   Confirm Password
                 </label>
                 <input
-                  type="password"
+                  type={confirmPasswordVisible ? "text" : "password"}
                   name="confirmPassword"
                   placeholder="Confirm Password"
                   value={formData.confirmPassword}
@@ -271,49 +306,121 @@ function Register() {
                   required
                   className="w-full p-3 border rounded-md"
                 />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+                >
+                  {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                </div>
               </div>
             </div>
 
-            {/* Conditionally render Gender and Class inputs for Students */}
+            {/* Conditionally render Student-specific fields */}
             {role === "Student" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Gender */}
+                {/* Gender Dropdown */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700">
                     Gender
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="gender"
-                    placeholder="Gender"
                     value={formData.gender}
                     onChange={handleChange}
                     required
                     className="w-full p-3 border rounded-md"
-                  />
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
-                {/* Class */}
+                {/* Class Dropdown */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700">
                     Class
                   </label>
-                  <input
-                    type="text"
+                  <select
                     name="studentClass"
-                    placeholder="Class"
                     value={formData.studentClass}
                     onChange={handleChange}
                     required
                     className="w-full p-3 border rounded-md"
+                  >
+                    <option value="Class 1">Class 1</option>
+                    <option value="Class 2">Class 2</option>
+                    <option value="Class 3">Class 3</option>
+                    <option value="Class 4">Class 4</option>
+                    <option value="Class 5">Class 5</option>
+                  </select>
+                </div>
+                {/* Profile Picture Upload */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    name="profilePic"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full p-2 border rounded-md"
                   />
                 </div>
               </div>
             )}
 
-            {/* Error Message */}
+            {/* Conditionally render Parent-specific fields */}
+            {role === "Parent" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Gender Dropdown (if you want it for parents) */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Gender
+                  </label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-md"
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                {/* Occupation */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Occupation
+                  </label>
+                  <input
+                    type="text"
+                    name="occupation"
+                    placeholder="Occupation"
+                    value={formData.occupation}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-md"
+                  />
+                </div>
+                {/* Profile Picture Upload */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    name="profilePic"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full p-2 border rounded-md"
+                  />
+                </div>
+              </div>
+            )}
+
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
-            {/* Submit Button */}
             <button
               type="submit"
               className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
@@ -324,10 +431,8 @@ function Register() {
           </form>
         </div>
       </div>
-      {/* Conditionally render the Landing (login) modal */}
-      {showLoginModal && (
-        <Landing closeModal={() => setShowLoginModal(false)} />
-      )}
+
+      {showLoginModal && <Landing closeModal={() => setShowLoginModal(false)} />}
     </div>
   );
 }
