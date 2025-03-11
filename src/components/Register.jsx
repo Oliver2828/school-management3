@@ -13,9 +13,10 @@ function Register() {
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "Male", // default for Student/Parent
+    gender: "Male",         // default for Student/Parent/Teacher
     studentClass: "Class 1", // default for Students
-    occupation: "", // new field for Parent
+    occupation: "",          // for Parent
+    subject: "",             // for Teacher
   });
   const [role, setRole] = useState("");
   const [profilePic, setProfilePic] = useState(null);
@@ -70,7 +71,7 @@ function Register() {
       payload.append("password", formData.password);
       payload.append("role", role);
 
-      // Include Student-specific fields if role is Student
+      // Role-specific fields
       if (role === "Student") {
         payload.append("gender", formData.gender);
         payload.append("studentClass", formData.studentClass);
@@ -79,10 +80,17 @@ function Register() {
         }
       }
 
-      // Include Parent-specific fields if role is Parent
       if (role === "Parent") {
         payload.append("gender", formData.gender);
         payload.append("occupation", formData.occupation);
+        if (profilePic) {
+          payload.append("profilePic", profilePic);
+        }
+      }
+
+      if (role === "Teacher") {
+        payload.append("gender", formData.gender);
+        payload.append("subject", formData.subject);
         if (profilePic) {
           payload.append("profilePic", profilePic);
         }
@@ -122,6 +130,7 @@ function Register() {
         gender: "Male",
         studentClass: "Class 1",
         occupation: "",
+        subject: "",
       });
       setRole("");
       setProfilePic(null);
@@ -315,7 +324,7 @@ function Register() {
               </div>
             </div>
 
-            {/* Conditionally render Student-specific fields */}
+            {/* Conditionally render role-specific fields */}
             {role === "Student" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Gender Dropdown */}
@@ -370,10 +379,9 @@ function Register() {
               </div>
             )}
 
-            {/* Conditionally render Parent-specific fields */}
             {role === "Parent" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Gender Dropdown (if you want it for parents) */}
+                {/* Gender Dropdown */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700">
                     Gender
@@ -400,6 +408,56 @@ function Register() {
                     placeholder="Occupation"
                     value={formData.occupation}
                     onChange={handleChange}
+                    className="w-full p-3 border rounded-md"
+                  />
+                </div>
+                {/* Profile Picture Upload */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Profile Picture
+                  </label>
+                  <input
+                    type="file"
+                    name="profilePic"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full p-2 border rounded-md"
+                  />
+                </div>
+              </div>
+            )}
+
+            {role === "Teacher" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Gender Dropdown */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Gender
+                  </label>
+                  <select
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 border rounded-md"
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                {/* Subject */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    name="subject"
+                    placeholder="Subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
                     className="w-full p-3 border rounded-md"
                   />
                 </div>

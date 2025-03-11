@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 function StudentDetails() {
   const [studentData, setStudentData] = useState(null);
   const [error, setError] = useState("");
-  const [newPicture, setNewPicture] = useState(null);
-  const [uploadError, setUploadError] = useState("");
-  const [uploadSuccess, setUploadSuccess] = useState("");
-  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("No token found. Please log in.");
+      return;
+    }
 
     const fetchStudentData = async () => {
       try {
@@ -28,110 +30,103 @@ function StudentDetails() {
     fetchStudentData();
   }, []);
 
-  const handlePictureChange = (e) => {
-    setNewPicture(e.target.files[0]);
-    setUploadError("");
-    setUploadSuccess("");
-  };
-
-  const handlePictureUpload = async () => {
-    if (!newPicture) {
-      setUploadError("Please select a picture to upload.");
-      return;
-    }
-    setUploading(true);
-    setUploadError("");
-    setUploadSuccess("");
-
+  const handleFileChange = async (event) => {
     const token = localStorage.getItem("token");
+    const file = event.target.files[0];
+    if (!file) return;
+
     const formData = new FormData();
-    formData.append("profilePic", newPicture);
+    formData.append("profilePic", file);
 
     try {
-      // Replace the endpoint with your actual update picture endpoint.
       const res = await axios.post("http://localhost:5000/api/auth/student/updateProfilePic", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-      // Assume the server returns the new photo URL in res.data.photo
-      setStudentData({ ...studentData, photo: res.data.photo });
-      setUploadSuccess("Profile picture updated successfully!");
+
+      setStudentData((prevData) => ({
+        ...prevData,
+        photo: res.data.photo,
+      }));
     } catch (err) {
       console.error(err);
-      setUploadError("Failed to update profile picture.");
+      setError("Failed to update profile picture.");
     }
-    setUploading(false);
   };
 
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  if (error) return <p className="text-red-500 mt-4">{error}</p>;
+  if (!studentData) return <p className="mt-4">Loading student details...</p>;
+
+  const fullName = `${studentData.firstName || ""} ${studentData.lastName || ""}`.trim();
+  const photoUrl = studentData.photo
+    ? `http://localhost:5000${studentData.photo}`
+    : "https://via.placeholder.com/150";
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Student Details</h1>
-
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-
-      {studentData ? (
-        <>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-gray-200">
-              <thead className="bg-gray-100 border-b">
-                <tr>
-                  <th className="px-4 py-2 text-left">Unique ID</th>
-                  <th className="px-4 py-2 text-left">Photo</th>
-                  <th className="px-4 py-2 text-left">Name</th>
-                  <th className="px-4 py-2 text-left">Gender</th>
-                  <th className="px-4 py-2 text-left">Class</th>
-                  <th className="px-4 py-2 text-left">Section</th>
-                  <th className="px-4 py-2 text-left">Address</th>
-                  <th className="px-4 py-2 text-left">Phone</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b">
-                  <td className="px-4 py-2">{studentData.studentId || "N/A"}</td>
-                  <td className="px-4 py-2">
-                    <img
-                      src={
-                        studentData.photo
-                          ? `http://localhost:5000${studentData.photo}`
-                          : "https://via.placeholder.com/50"
-                      }
-                      alt="Student"
-                      className="rounded w-16 h-16 object-cover"
-                    />
-                  </td>
-                  <td className="px-4 py-2">
-                    {studentData.firstName} {studentData.lastName}
-                  </td>
-                  <td className="px-4 py-2">{studentData.gender || "N/A"}</td>
-                  <td className="px-4 py-2">{studentData.studentClass || "N/A"}</td>
-                  <td className="px-4 py-2">N/A</td>
-                  <td className="px-4 py-2">{studentData.address}</td>
-                  <td className="px-4 py-2">{studentData.phoneNumber}</td>
-                </tr>
-              </tbody>
-            </table>
+    <div className="p-6 bg-white shadow rounded-md max-w-xl mx-auto">
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-gray-700">Home &gt; Student Details</h2>
+      </div>
+      <h1 className="text-2xl font-bold mb-6">About Me</h1>
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex-shrink-0">
+          <img
+            src={photoUrl}
+            alt="Student Avatar"
+            className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border border-gray-200"
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+        </div>
+        <div className="flex-grow">
+          <h2 className="text-2xl font-semibold mb-2">{fullName || "No Name Provided"}</h2>
+          <p className="text-gray-500 mb-4">
+            Dedicated student striving for excellence.
+          </p>
+          <div className="mt-4 space-y-2">
+            <p className="font-medium">
+              Student ID: <span className="text-gray-700">#{studentData.studentId || "N/A"}</span>
+            </p>
+            <p className="font-medium">
+              Name: <span className="text-gray-700">{fullName || "N/A"}</span>
+            </p>
+            <p className="font-medium">
+              Gender: <span className="text-gray-700">{studentData.gender || "N/A"}</span>
+            </p>
+            <p className="font-medium">
+              Class: <span className="text-gray-700">{studentData.studentClass || "N/A"}</span>
+            </p>
+            <p className="font-medium">
+              Section: <span className="text-gray-700">{studentData.section || "N/A"}</span>
+            </p>
+            <p className="font-medium">
+              Address: <span className="text-gray-700">{studentData.address || "N/A"}</span>
+            </p>
+            <p className="font-medium">
+              Phone: <span className="text-gray-700">{studentData.phoneNumber || "N/A"}</span>
+            </p>
           </div>
-
-          {/* Section to update profile picture */}
-          <div className="mt-4">
-            <h2 className="text-xl font-semibold mb-2">Change Profile Picture</h2>
-            <input type="file" accept="image/*" onChange={handlePictureChange} />
-            <button
-              onClick={handlePictureUpload}
-              disabled={uploading}
-              className="ml-4 bg-blue-500 text-white px-3 py-1 rounded"
-            >
-              {uploading ? "Uploading..." : "Upload New Picture"}
-            </button>
-            {uploadError && <p className="text-red-500 mt-2">{uploadError}</p>}
-            {uploadSuccess && <p className="text-green-500 mt-2">{uploadSuccess}</p>}
-          </div>
-        </>
-      ) : (
-        <div className="text-center p-4">No student data found.</div>
-      )}
+          <button
+            className="bg-blue-600 text-white px-4 py-2 mt-6 rounded hover:bg-blue-700"
+            onClick={handleButtonClick}
+          >
+            Change Profile Pic
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
